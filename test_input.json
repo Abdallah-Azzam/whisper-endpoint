@@ -1,0 +1,10 @@
+{
+  "input": {
+    "audio": "https://github.com/runpod-workers/sample-inputs/raw/main/audio/gettysburg.wav",
+    "model": "large-v3",
+    "enable_vad": true,
+    "vad_onset": 0.5,
+    "vad_offset": 0.363,
+    "temperature": 0
+  }
+}
