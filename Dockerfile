@@ -40,9 +40,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r /requirements.txt --no-cache-dir
 
 COPY builder/fetch_models.py /fetch_models.py
-RUN python /fetch_models.py && rm /fetch_models.py
+ARG HF_TOKEN
+RUN HF_TOKEN="${HF_TOKEN}" HUGGING_FACE_HUB_TOKEN="${HF_TOKEN}" \
+    python /fetch_models.py && rm /fetch_models.py
 
 COPY src .
+COPY handler.py .
 COPY test_input.json .
 
-CMD python -u /rp_handler.py
+CMD python -u /handler.py

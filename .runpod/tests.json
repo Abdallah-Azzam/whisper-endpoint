@@ -1,0 +1,39 @@
+{
+  "tests": [
+    {
+      "name": "transcribe_url_with_vad",
+      "input": {
+        "audio": "https://github.com/runpod-workers/sample-inputs/raw/main/audio/gettysburg.wav",
+        "model": "large-v3",
+        "enable_vad": true,
+        "vad_onset": 0.5,
+        "vad_offset": 0.363,
+        "temperature": 0,
+        "transcription": "plain_text"
+      },
+      "timeout": 300000
+    }
+  ],
+  "config": {
+    "gpuTypeId": "NVIDIA RTX A4000",
+    "gpuCount": 1,
+    "env": [
+      {
+        "key": "WHISPER_MODEL",
+        "value": "large-v3"
+      },
+      {
+        "key": "DEFAULT_ENABLE_VAD",
+        "value": "true"
+      }
+    ],
+    "allowedCudaVersions": [
+      "12.7",
+      "12.6",
+      "12.5",
+      "12.4",
+      "12.3",
+      "12.2"
+    ]
+  }
+}

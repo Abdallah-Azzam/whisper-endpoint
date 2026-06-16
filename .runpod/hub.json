@@ -1,0 +1,107 @@
+{
+  "title": "Whisper Endpoint",
+  "description": "Faster-whisper large-v3 speech-to-text with Silero VAD. Transcribe audio from URL or base64 with tunable voice-activity detection for general use.",
+  "type": "serverless",
+  "category": "audio",
+  "iconUrl": "https://dummyimage.com/100x100/1a1a2e/fff&text=W",
+  "config": {
+    "runsOn": "GPU",
+    "containerDiskInGb": 20,
+    "gpuCount": 1,
+    "gpuIds": "ADA_24",
+    "allowedCudaVersions": ["12.7", "12.6", "12.5", "12.4", "12.3", "12.2"],
+    "presets": [
+      {
+        "name": "Default (VAD enabled)",
+        "defaults": {
+          "WHISPER_MODEL": "large-v3",
+          "WHISPER_COMPUTE_TYPE": "float16",
+          "DEFAULT_ENABLE_VAD": "true",
+          "DEFAULT_VAD_ONSET": "0.5",
+          "DEFAULT_VAD_OFFSET": "0.363",
+          "DEFAULT_SPEECH_PAD_MS": "400",
+          "DEFAULT_MIN_SILENCE_DURATION_MS": "500"
+        }
+      },
+      {
+        "name": "conversational",
+        "defaults": {
+          "WHISPER_MODEL": "large-v3",
+          "WHISPER_COMPUTE_TYPE": "float16",
+          "DEFAULT_ENABLE_VAD": "true",
+          "DEFAULT_VAD_ONSET": "0.5",
+          "DEFAULT_VAD_OFFSET": "0.363",
+          "DEFAULT_SPEECH_PAD_MS": "400",
+          "DEFAULT_MIN_SILENCE_DURATION_MS": "500"
+        }
+      }
+    ],
+    "env": [
+      {
+        "key": "WHISPER_MODEL",
+        "value": "large-v3"
+      },
+      {
+        "key": "WHISPER_COMPUTE_TYPE",
+        "value": "float16"
+      },
+      {
+        "key": "DEFAULT_ENABLE_VAD",
+        "input": {
+          "type": "boolean",
+          "name": "Enable VAD",
+          "description": "Use Silero voice-activity detection to skip non-speech audio",
+          "default": true,
+          "trueValue": "true",
+          "falseValue": "false"
+        }
+      },
+      {
+        "key": "DEFAULT_VAD_ONSET",
+        "input": {
+          "name": "VAD onset",
+          "type": "number",
+          "description": "Speech probability threshold to start a segment (0–1)",
+          "min": 0.1,
+          "max": 0.9,
+          "default": 0.5
+        }
+      },
+      {
+        "key": "DEFAULT_VAD_OFFSET",
+        "input": {
+          "name": "VAD offset",
+          "type": "number",
+          "description": "Silence threshold to end a speech segment (0–1)",
+          "min": 0.1,
+          "max": 0.9,
+          "default": 0.363
+        }
+      },
+      {
+        "key": "DEFAULT_SPEECH_PAD_MS",
+        "input": {
+          "name": "Speech pad (ms)",
+          "type": "number",
+          "description": "Padding added around detected speech chunks",
+          "min": 0,
+          "max": 2000,
+          "default": 400,
+          "advanced": true
+        }
+      },
+      {
+        "key": "DEFAULT_MIN_SILENCE_DURATION_MS",
+        "input": {
+          "name": "Min silence duration (ms)",
+          "type": "number",
+          "description": "Minimum silence before splitting speech segments",
+          "min": 100,
+          "max": 5000,
+          "default": 500,
+          "advanced": true
+        }
+      }
+    ]
+  }
+}

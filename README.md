@@ -1,6 +1,8 @@
 # Whisper Endpoint (RunPod Serverless)
 
-Custom RunPod Serverless worker for **faster-whisper `large-v3`** with Silero VAD enabled by default. Based on the [official RunPod faster-whisper worker](https://github.com/runpod-workers/worker-faster_whisper), optimized for MedScribe-AI transcription.
+[![Runpod](https://api.runpod.io/badge/Abdallah-Azzam/whisper-endpoint)](https://console.runpod.io/hub/Abdallah-Azzam/whisper-endpoint)
+
+Custom RunPod Serverless worker for **faster-whisper `large-v3`** with Silero VAD enabled by default. Based on the [official RunPod faster-whisper worker](https://github.com/runpod-workers/worker-faster_whisper), optimized for transcription.
 
 ## Features
 
@@ -72,8 +74,16 @@ Alternatively, pass `"audio": "https://..."` instead of `audio_base64`.
 ## Build and deploy
 
 ```bash
-docker build -t your-registry/whisper-endpoint:latest .
+# Optional: pass HF token for faster model downloads (create at huggingface.co/settings/tokens)
+docker build --build-arg HF_TOKEN=$HF_TOKEN -t your-registry/whisper-endpoint:latest .
 docker push your-registry/whisper-endpoint:latest
+```
+
+Do not commit tokens to git or paste them in chat. Use an env var locally:
+
+```bash
+$env:HF_TOKEN = "hf_..."   # PowerShell
+docker build --build-arg HF_TOKEN=$env:HF_TOKEN -t abdallahazzam1/whisper-endpoint:latest .
 ```
 
 In RunPod Serverless:
@@ -100,14 +110,16 @@ Requires CUDA GPU and downloaded model weights (inside the built container):
 python /test_local.py
 ```
 
-## MedScribe integration
+## RunPod Hub
 
-Set in MedScribe backend / ARQ worker:
+This repo includes [RunPod Hub](https://docs.runpod.io/hub/publishing-guide) config in `.runpod/`:
 
-```
-STT_PROVIDER=runpod
-RUNPOD_API_KEY=rpa_...
-RUNPOD_STT_ENDPOINT_ID=<your-endpoint-id>
-RUNPOD_STT_VAD_ONSET=0.500
-RUNPOD_STT_VAD_OFFSET=0.363
-```
+- `hub.json` — listing metadata, GPU requirements, VAD env defaults
+- `tests.json` — automated smoke test (Gettysburg sample audio)
+
+To publish:
+
+1. Push this repo to GitHub (`Abdallah-Azzam/whisper-endpoint`)
+2. Create a **GitHub release** (Hub indexes releases, not commits)
+3. Connect the repo on the [RunPod Hub](https://console.runpod.io/hub) page
+4. Wait for build + review (status goes from Pending → live)
