@@ -123,3 +123,6 @@ def run_whisper_job(job):
         rp_cleanup.clean(["input_objects"])
 
     return whisper_results
+
+
+runpod.serverless.start({"handler": run_whisper_job})

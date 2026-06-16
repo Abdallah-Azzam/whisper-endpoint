@@ -1,7 +1,16 @@
-"""RunPod Serverless entrypoint (required by RunPod Hub)."""
+"""RunPod Hub requires handler.py at repository root.
+
+Container entrypoint is src/rp_handler.py (see Dockerfile CMD).
+This file satisfies Hub static analysis without double-starting the worker.
+"""
 
 import runpod
 
-from rp_handler import run_whisper_job
 
-runpod.serverless.start({"handler": run_whisper_job})
+def handler(job):
+    from rp_handler import run_whisper_job
+
+    return run_whisper_job(job)
+
+
+runpod.serverless.start({"handler": handler})

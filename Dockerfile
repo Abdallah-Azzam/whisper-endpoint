@@ -48,4 +48,4 @@ COPY src .
 COPY handler.py .
 COPY test_input.json .
 
-CMD python -u /handler.py
+CMD python -u /rp_handler.py
